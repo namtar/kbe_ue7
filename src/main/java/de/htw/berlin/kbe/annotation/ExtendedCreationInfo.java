@@ -4,7 +4,6 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Objects;
 
 /**
  * Created by drummer on 03.06.2015.
@@ -19,8 +18,10 @@ public @interface ExtendedCreationInfo {
 
 	String[] tags() default {};
 
+	// weil alles von object erbt
 	Class baseClass() default Object.class;
 
-	Class[] interfaces() default { Object.class };
+	// weil null class schwierig ist
+	Class[] interfaces() default {};
 
 }

@@ -13,8 +13,18 @@ public class ShinyClassTester {
 		ShinyClass shinyClass = new ShinyClass();
 		shinyClass.setSomeString("SomeStringFunny");
 
-		AnnotationReader.readCreationInfo(shinyClass);
+		//		AnnotationReader.readCreationInfo(shinyClass);
 
+		AnnotationReader.readAnnotationFromClass(shinyClass);
+
+	}
+
+	@Test
+	public void testShinyComplex() {
+
+		ShinyComplex shinyComplex = new ShinyComplex();
+
+		AnnotationReader.readAnnotationFromClass(shinyComplex);
 	}
 
 }

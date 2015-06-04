@@ -3,6 +3,7 @@ package de.htw.berlin.kbe;
 import de.htw.berlin.kbe.annotation.CreationInfo;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -14,15 +15,41 @@ import java.util.Arrays;
  */
 public class AnnotationReader {
 
-	public static String readAnnotationFromClass(Object object, Class<? extends Annotation> annotationClass) {
+	public static String readAnnotationFromClass(Object object) {
 
 		if (object != null) {
 
-			Annotation annotation = object.getClass().getAnnotation(annotationClass);
+			Annotation[] annotations = object.getClass().getAnnotations();
+			for (Annotation annotation : annotations) {
+				Method[] annotationMethods = annotation.getClass().getDeclaredMethods();
+				for (Method method : annotationMethods) {
+					try {
+						//						System.out.println(method.getName());
+						Method[] superclassMethods = annotation.getClass().getSuperclass().getMethods();
+						boolean contained = false;
+						for (Method superClassMethod : superclassMethods) {
+							if (superClassMethod.getName().equals(method.getName())) {
+								contained = true;
+								break;
+							}
+						}
+						if (!contained) {
+							Object result = method.invoke(annotation);
+							if (result.getClass().isArray()) {
+								for (Object elem : (Object[]) result) {
+									System.out.println(elem);
+								}
+							} else {
+								System.out.println(result);
+							}
 
-			Method[] methods = annotationClass.getMethods();
-			for (Method method : methods) {
-
+						}
+					} catch (IllegalAccessException e) {
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		}
 		return null;

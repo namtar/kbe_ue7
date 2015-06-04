@@ -19,9 +19,9 @@ public @interface ExtendedCreationInfo {
 	String[] tags() default {};
 
 	// weil alles von object erbt
-	Class baseClass() default Object.class;
+	Class<?> baseClass() default Object.class;
 
 	// weil null class schwierig ist
-	Class[] interfaces() default {};
+	Class<?>[] interfaces() default {};
 
 }
